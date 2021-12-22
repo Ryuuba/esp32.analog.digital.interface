@@ -23,7 +23,6 @@ LiquidCrystal lcd(4, 5, 15, 16, 17, 18);
 bool on_off;
 bool first_it;
 const char* mqttServer = "10.0.0.11"; // RPi3
-// const char* mqttServer = "10.0.0.15"; // Oztoatl
 const int mqttPort = 1883;
 const char* subscriptionTopic = "esp32/ctrl";
 const char* publishTopic = "esp32/pot";
@@ -53,7 +52,7 @@ void callback(char* topic, byte* message, unsigned int length) {
   lcd.setCursor(0, 1);
   lcd.print(topicStr + ' ' + messageText);
   if (topicStr == subscriptionTopic) {
-    if (messageText == "on")
+    if (messageText == "true")
       digitalWrite(CTRL_LED, HIGH); // Turns the CTRL_LED on
     else
       digitalWrite(CTRL_LED, LOW);  // Turns the CTRL_LED off
@@ -84,7 +83,7 @@ void reconnect() {
 
 void setup() {
   first_it = true;
-  on_off = true;  // Flag that turn on or turn of the test led
+  on_off = true;  // Flag that turn on or turn off the test led
   pinMode(SENSOR_INPUT, INPUT); // Analog pin emulating a sensor
   pinMode(TEST_LED, OUTPUT);    // Digital pin blinking a LED
   pinMode(CTRL_LED, OUTPUT);    // Digital pin controlling a LED
